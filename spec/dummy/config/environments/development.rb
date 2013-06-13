@@ -34,4 +34,11 @@ Dummy::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # mailgun deilvery method
+  config.action_mailer.delivery_method  = :mailgun
+  config.action_mailer.mailgun_settings = {
+    api_host: "samples.mailgun.org",
+    api_key:  "key-3ax6xnjp29jd6fds4gc373sgvjxteol0"
+  }
 end
