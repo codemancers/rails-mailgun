@@ -7,16 +7,15 @@ require "mailgun-rails/version"
 Gem::Specification.new do |s|
   s.name        = "mailgun-rails"
   s.version     = MailgunRails::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of MailgunRails."
-  s.description = "TODO: Description of MailgunRails."
+  s.authors     = ["Yuva Kumar"]
+  s.email       = ["yuva@codemancers.com", "hello@codemancers.com"]
+  s.homepage    = "https://github.com/code-mancers/mailgun-rails"
+  s.summary     = "Mailgun integration for rails"
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["lib/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
   s.add_dependency "rails", "~> 3.2.13"
-  # s.add_dependency "jquery-rails"
+  s.add_dependency "rest-client", "~> 1.6.7"
 
-  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "rspec-rails", "~> 2.13.2"
 end
