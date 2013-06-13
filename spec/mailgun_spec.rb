@@ -19,13 +19,13 @@ end
 
 
 describe MailgunTestMailer do
-  let(:url)  { "https://api.mailgun.net/v2/samples.mailgun.org/messages" }
+  let(:url)  { "https://api:key-3ax6xnjp29jd6fds4gc373sgvjxteol0@api.mailgun.net/v2/samples.mailgun.org/messages" }
 
   context "when mail is plain text" do
     let(:message_params) do
       {
-        from:    ["from@example.com"],
-        to:      ["to@example.com"],
+        from:    "from@example.com",
+        to:      "to@example.com",
         subject: "Test Mail",
         text:    "Plain Text Mail"
       }
@@ -40,8 +40,8 @@ describe MailgunTestMailer do
   context "when mail is html" do
     let(:message_params) do
       {
-        from:    ["from@example.com"],
-        to:      ["to@example.com"],
+        from:    "from@example.com",
+        to:      "to@example.com",
         subject: "Test Mail",
         html:    "<h1>Html Mail</h1>"
       }

@@ -11,11 +11,15 @@ module MailgunRails
 
     private
     def message_url
-      "https://api.mailgun.net/v2/#{settings[:api_host]}/messages"
+      "https://api:#{settings[:api_key]}@api.mailgun.net/v2/#{settings[:api_host]}/messages"
     end
 
     def message_params(mail)
-      message_params = { from: mail.from, to: mail.to, subject: mail.subject }
+      message_params = {
+        from: mail.from.join(" "),
+        to:   mail.to.join(", "),
+        subject: mail.subject
+      }
 
       type = mail.content_type.match(/html/) ? :html : :text
       message_params[type] = mail.body.to_s
