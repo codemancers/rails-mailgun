@@ -14,8 +14,8 @@ Gem::Specification.new do |s|
 
   s.files = Dir["lib/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 3.2.13"
+  s.add_dependency "rails", "~> 4.0.0"
   s.add_dependency "rest-client", "~> 1.6.7"
 
-  s.add_development_dependency "rspec-rails", "~> 2.13.2"
+  s.add_development_dependency "rspec-rails", "~> 2.14.0"
 end
