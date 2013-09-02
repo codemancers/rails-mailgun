@@ -1,6 +1,8 @@
 # MailgunRails
 Mailgun integration for rails
 
+[![Build Status](https://travis-ci.org/code-mancers/mailgun-rails.png?branch=master)](https://travis-ci.org/code-mancers/mailgun-rails)
+
 ## Installation
 Add this line to your application's Gemfile:
 
