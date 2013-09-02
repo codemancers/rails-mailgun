@@ -1,7 +1,9 @@
 # RailsMailgun
+[![Build Status](https://travis-ci.org/code-mancers/rails-mailgun.png?branch=master)](https://travis-ci.org/code-mancers/rails-mailgun)
+[![Code Climate](https://codeclimate.com/github/code-mancers/rails-mailgun.png)](https://codeclimate.com/github/code-mancers/rails-mailgun)
+
 Mailgun integration for rails
 
-[![Build Status](https://travis-ci.org/code-mancers/rails-mailgun.png?branch=master)](https://travis-ci.org/code-mancers/rails-mailgun)
 
 ## Installation
 Add this line to your application's Gemfile:
