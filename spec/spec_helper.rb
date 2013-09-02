@@ -2,7 +2,7 @@
 ENV["RAILS_ENV"] ||= 'test'
 require 'rails'
 require 'action_mailer'
-require 'mailgun-rails'
+require 'rails-mailgun'
 
 RSpec.configure do |config|
   # ## Mock Framework

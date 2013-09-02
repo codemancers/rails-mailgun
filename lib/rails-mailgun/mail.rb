@@ -1,4 +1,4 @@
-module MailgunRails
+module RailsMailgun
   class Mail
     def initialize(settings)
       @settings = settings

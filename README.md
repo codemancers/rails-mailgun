@@ -1,12 +1,12 @@
-# MailgunRails
+# RailsMailgun
 Mailgun integration for rails
 
-[![Build Status](https://travis-ci.org/code-mancers/mailgun-rails.png?branch=master)](https://travis-ci.org/code-mancers/mailgun-rails)
+[![Build Status](https://travis-ci.org/code-mancers/rails-mailgun.png?branch=master)](https://travis-ci.org/code-mancers/rails-mailgun)
 
 ## Installation
 Add this line to your application's Gemfile:
 
-    gem 'mailgun', git: "git://github.com/code-mancers/mailgun-rails.git"
+    gem 'mailgun', git: "git://github.com/code-mancers/rails-mailgun.git"
 
 And then execute:
 

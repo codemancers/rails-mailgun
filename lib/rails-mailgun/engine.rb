@@ -1,4 +1,4 @@
-module MailgunRails
+module RailsMailgun
   class Engine < ::Rails::Engine
   end
 end
