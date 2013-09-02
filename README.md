@@ -31,6 +31,11 @@ Your::Application.configure do
 end
 ```
 
+## Running the specs
+Specs can be run via:
+
+    bundle exec rspec spec/*_spec.rb
+
 ## TODO
 1. Add error handling once the response is received from mailgun
 2. Write a helper rake task to quickly check whether integration is working or not!
