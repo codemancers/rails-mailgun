@@ -3,5 +3,8 @@ rvm:
   - 1.9.3
   - 2.0.0
   - jruby
+gemfile:
+  - Gemfile
+  - gemfiles/Gemfile.rails-3.2.13
 
 script: bundle exec rspec spec/*_spec.rb
