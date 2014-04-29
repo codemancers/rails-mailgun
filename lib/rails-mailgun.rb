@@ -1,6 +1,6 @@
 require "rails-mailgun/engine"
 require "rails-mailgun/mail"
-require "rest-client"
+require 'mailgun'
 
 module RailsMailgun
 end
