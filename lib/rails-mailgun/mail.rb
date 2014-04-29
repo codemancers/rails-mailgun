@@ -6,25 +6,27 @@ module RailsMailgun
     attr_accessor :settings
 
     def deliver!(mail)
-      RestClient.post message_url, message_params(mail)
+      client = Mailgun::Client.new(settings[:api_key])
+      client.send_message(settings[:api_host], message_object(mail))
     end
 
     private
-    def message_url
-      "https://api:#{settings[:api_key]}@api.mailgun.net/v2/#{settings[:api_host]}/messages"
-    end
 
-    def message_params(mail)
-      message_params = {
-        from: mail.from.join(" "),
-        to:   mail.to.join(", "),
-        subject: mail.subject
-      }
+    def message_object(mail)
+      message_object = Mailgun::MessageBuilder.new
 
-      type = mail.content_type.match(/html/) ? :html : :text
-      message_params[type] = mail.body.to_s
+      message_object.set_from_address( mail.from.join(' ') )
+      mail.to.each { |t| message_object.add_recipient(:to, t) }
 
-      message_params
+      message_object.set_subject(mail.subject)
+
+      if mail.content_type.match(/html/)
+        message_object.set_html_body(mail.body.to_s)
+      else
+        message_object.set_text_body(mail.body.to_s)
+      end
+
+      message_object
     end
   end
 end

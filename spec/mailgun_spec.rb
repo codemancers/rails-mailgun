@@ -19,36 +19,45 @@ end
 
 
 describe MailgunTestMailer do
-  let(:url)  { "https://api:key-3ax6xnjp29jd6fds4gc373sgvjxteol0@api.mailgun.net/v2/samples.mailgun.org/messages" }
+  describe 'setting key and host for mailgun client' do
+    it 'instantiates Mailgun::Client with api key' do
+      Mailgun::Client.should_receive(:new) do |key|
+        expect(key).to eq "key-3ax6xnjp29jd6fds4gc373sgvjxteol0"
+        stub(send_message: true)
+      end
 
-  context "when mail is plain text" do
-    let(:message_params) do
-      {
-        from:    "from@example.com",
-        to:      "to@example.com",
-        subject: "Test Mail",
-        text:    "Plain Text Mail"
-      }
+      MailgunTestMailer.text_mail.deliver
     end
 
-    it "sends a test mail" do
-      RestClient.should_receive(:post).once.with(url, message_params)
+    it 'calls Mailgun::Client with send message by setting api host' do
+      Mailgun::Client.any_instance.should_receive(:send_message) do |host, _|
+        expect(host).to eq "samples.mailgun.org"
+      end
+
       MailgunTestMailer.text_mail.deliver
     end
   end
 
-  context "when mail is html" do
-    let(:message_params) do
-      {
-        from:    "from@example.com",
-        to:      "to@example.com",
-        subject: "Test Mail",
-        html:    "<h1>Html Mail</h1>"
-      }
+  describe 'setting different parts of email' do
+    before(:each) do
+      Mailgun::Client.any_instance.should_receive(:send_message)
     end
 
-    it "sends a html mail" do
-      RestClient.should_receive(:post).once.with(url, message_params)
+    it 'sets subject from the mail passed' do
+      Mailgun::MessageBuilder.any_instance.should_receive(:set_subject)
+        .with('Test Mail')
+      MailgunTestMailer.text_mail.deliver
+    end
+
+    it 'sets text body when the mail is in plain text' do
+      Mailgun::MessageBuilder.any_instance.should_receive(:set_text_body)
+        .with('Plain Text Mail')
+      MailgunTestMailer.text_mail.deliver
+    end
+
+    it 'sets html body when the mail is in html' do
+      Mailgun::MessageBuilder.any_instance.should_receive(:set_html_body)
+        .with('<h1>Html Mail</h1>')
       MailgunTestMailer.html_mail.deliver
     end
   end
