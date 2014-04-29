@@ -20,13 +20,34 @@ module RailsMailgun
 
       message_object.set_subject(mail.subject)
 
+      if mail.multipart?
+        set_message_object_body(message_object, mail.parts.first)
+
+        mail.attachments.each do |attachment|
+          tempfile = create_tempfile_from_attachment(attachment)
+          message_object.add_attachment(tempfile.path, attachment.filename)
+        end
+      else
+        set_message_object_body(message_object, mail)
+      end
+
+      message_object
+    end
+
+    def set_message_object_body(message_object, mail)
       if mail.content_type.match(/html/)
         message_object.set_html_body(mail.body.to_s)
       else
         message_object.set_text_body(mail.body.to_s)
       end
+    end
 
-      message_object
+    def create_tempfile_from_attachment(attachment)
+      tempfile = Tempfile.new(attachment.filename)
+      tempfile.binmode
+      tempfile.write(attachment.body.raw_source)
+      tempfile.close
+      tempfile
     end
   end
 end

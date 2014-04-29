@@ -15,6 +15,26 @@ class MailgunTestMailer < ActionMailer::Base
       format.html { render text: "<h1>Html Mail</h1>" }
     end
   end
+
+  def mail_with_attachment
+    attachments['hello.pdf'] = {
+      mime_type: 'application/pdf',
+      content: 'hello'
+    }
+
+    mail do |format|
+      format.text { render text: "Plain Text Mail" }
+    end
+  end
+
+  def mail_with_2_attachments
+    attachments['hello.txt'] = { mime_type: 'text/plain', content: 'hello' }
+    attachments['world.txt'] = { mime_type: 'text/plain', content: 'world' }
+
+    mail do |format|
+      format.text { render text: "Plain Text Mail" }
+    end
+  end
 end
 
 
@@ -59,6 +79,27 @@ describe MailgunTestMailer do
       Mailgun::MessageBuilder.any_instance.should_receive(:set_html_body)
         .with('<h1>Html Mail</h1>')
       MailgunTestMailer.html_mail.deliver
+    end
+  end
+
+  describe 'sending emails containing attachments' do
+    before(:each) do
+      Mailgun::Client.any_instance.should_receive(:send_message)
+    end
+
+    it 'sets adds attachments to message builder' do
+      Mailgun::MessageBuilder.any_instance
+        .should_receive(:add_attachment) do |tempfile, filename|
+        expect(File.read(tempfile)).to eq 'hello'
+        expect(filename).to eq 'hello.pdf'
+      end
+
+      MailgunTestMailer.mail_with_attachment.deliver
+    end
+
+    it 'add all the attachments to message builder' do
+      Mailgun::MessageBuilder.any_instance.should_receive(:add_attachment).twice
+      MailgunTestMailer.mail_with_2_attachments.deliver
     end
   end
 end
