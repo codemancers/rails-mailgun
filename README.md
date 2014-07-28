@@ -8,7 +8,7 @@ Mailgun integration for rails
 ## Installation
 Add this line to your application's Gemfile:
 
-    gem 'mailgun', git: "git://github.com/code-mancers/rails-mailgun.git"
+    gem 'rails-mailgun', git: "git://github.com/code-mancers/rails-mailgun.git"
 
 And then execute:
 
