@@ -16,6 +16,12 @@ class MailgunTestMailer < ActionMailer::Base
     end
   end
 
+  def mail_with_cc(cc_email)
+    mail(cc: cc_email) do |format|
+      format.text { render text: "Plain Text Mail" }
+    end
+  end
+
   def mail_with_attachment
     attachments['hello.pdf'] = {
       mime_type: 'application/pdf',
@@ -100,6 +106,21 @@ describe MailgunTestMailer do
     it 'add all the attachments to message builder' do
       expect_any_instance_of(Mailgun::MessageBuilder).to receive(:add_attachment).twice
       MailgunTestMailer.mail_with_2_attachments.deliver
+    end
+  end
+
+  describe 'sendig emails cced users' do
+    it 'will cc mail ids from cc' do
+      expect_any_instance_of(Mailgun::MessageBuilder)
+        .to receive(:add_recipient).with("from", 'from@example.com', nil)
+      expect_any_instance_of(Mailgun::MessageBuilder)
+        .to receive(:add_recipient).with(:to, 'to@example.com')
+      expect_any_instance_of(Mailgun::MessageBuilder)
+        .to receive(:add_recipient).with(:cc, 'cc@example.com')
+      expect_any_instance_of(Mailgun::Client)
+        .to receive(:send_message)
+
+      MailgunTestMailer.mail_with_cc('cc@example.com').deliver
     end
   end
 end
