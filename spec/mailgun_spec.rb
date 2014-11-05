@@ -22,6 +22,12 @@ class MailgunTestMailer < ActionMailer::Base
     end
   end
 
+  def mail_with_bcc(bcc_email)
+    mail(bcc: bcc_email) do |format|
+      format.text { render text: "Plain Text Mail" }
+    end
+  end
+
   def mail_with_attachment
     attachments['hello.pdf'] = {
       mime_type: 'application/pdf',
@@ -49,7 +55,7 @@ describe MailgunTestMailer do
     it 'instantiates Mailgun::Client with api key' do
       expect(Mailgun::Client).to receive(:new) do |key|
         expect(key).to eq "key-3ax6xnjp29jd6fds4gc373sgvjxteol0"
-        stub(send_message: true)
+        double(send_message: true)
       end
 
       MailgunTestMailer.text_mail.deliver
@@ -109,7 +115,7 @@ describe MailgunTestMailer do
     end
   end
 
-  describe 'sendig emails cced users' do
+  describe 'sending emails cc-ed users' do
     it 'will cc mail ids from cc' do
       expect_any_instance_of(Mailgun::MessageBuilder)
         .to receive(:add_recipient).with("from", 'from@example.com', nil)
@@ -121,6 +127,21 @@ describe MailgunTestMailer do
         .to receive(:send_message)
 
       MailgunTestMailer.mail_with_cc('cc@example.com').deliver
+    end
+  end
+
+  describe 'sending emails bcc-ed users' do
+    it 'will bcc mail ids from bcc' do
+      expect_any_instance_of(Mailgun::MessageBuilder)
+        .to receive(:add_recipient).with("from", 'from@example.com', nil)
+      expect_any_instance_of(Mailgun::MessageBuilder)
+        .to receive(:add_recipient).with(:to, 'to@example.com')
+      expect_any_instance_of(Mailgun::MessageBuilder)
+        .to receive(:add_recipient).with(:bcc, 'bcc@example.com')
+      expect_any_instance_of(Mailgun::Client)
+        .to receive(:send_message)
+
+      MailgunTestMailer.mail_with_bcc('bcc@example.com').deliver
     end
   end
 end
