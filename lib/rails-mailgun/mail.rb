@@ -18,6 +18,7 @@ module RailsMailgun
       message_object.set_from_address( mail.from.join(' ') )
       mail.to.each { |t| message_object.add_recipient(:to, t) }
       add_cc_emails_to_message_object(message_object, mail)
+      add_bcc_emails_to_message_object(message_object, mail)
 
       message_object.set_subject(mail.subject)
 
@@ -48,6 +49,13 @@ module RailsMailgun
 
       cc_emails = [mail.cc].flatten
       cc_emails.each { |t| message_object.add_recipient(:cc, t) }
+    end
+
+    def add_bcc_emails_to_message_object(message_object, mail)
+      return unless mail.bcc.present?
+
+      bcc_emails = [mail.bcc].flatten
+      bcc_emails.each { |t| message_object.add_recipient(:bcc, t) }
     end
 
     def create_tempfile_from_attachment(attachment)
